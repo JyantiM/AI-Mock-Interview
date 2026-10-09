@@ -1,66 +1,60 @@
-# 🎯 AI Mock Interviewer
+# AI Mock Interviewer
 
-An intelligent, adaptive technical & HR mock interviewer powered by **LangChain**, **FAISS**, and **Google Gemini** (100% free API tier).
-
+## Overview
+AI Mock Interviewer simulates technical and behavioral hiring loops by assessing candidate knowledge across core computer science concepts, system architecture, and situational judgment. The system implements dual question generation pathways: standardized, curated question retrieval via vector similarity search, alongside dynamic question synthesis derived directly from candidate resume projects and target job descriptions. Responses are evaluated against multi-point rubrics to provide constructive feedback, reference answers, and performance analytics.
 ---
-
-## 🌟 Key Features
-
-1. **Dual Question Generation Strategy**:
-   - **Flow A (KB Direct Lookup + Resume Personalization)**: Fetches standardized questions and rubrics from a curated knowledge base (DSA, OOPs, System Design, etc.) and dynamically weaves in candidate project context from their resume.
-   - **Flow B (Dynamic Resume Questions)**: The LLM generates tailored technical questions based directly on the candidate's resume and job description, simultaneously outputting a matching 3-5 point rubric (`expected_points`).
-2. **Adaptive Difficulty**:
-   - Dynamically scales difficulty between `easy`, `medium`, and `hard` based on running candidate performance.
-3. **Structured Rubric Evaluation**:
-   - Zero branching evaluator: tests candidates against each criterion with boolean pass/fail and constructive feedback.
-4. **Performance Radar Chart & Downloadable Summary**:
-   - Interactive Plotly polar/radar chart showing strengths across all tested skill domains.
-   - One-click export to CSV containing full questions, candidate responses, strengths, improvements, and ideal answers.
-5. **Modern Dark UI**:
-   - Sleek glassmorphism aesthetic built with Streamlit.
-
+## Core Features
+- **Two-Stage Interview Pipeline**:
+  - **Technical Round**: 5 questions spanning algorithms, system architecture, and domain-specific engineering principles.
+  - **HR & Behavioral Round**: 3 questions assessing collaboration, conflict resolution, ownership, and communication.
+- **Dual Question Generation Strategy**:
+  - **Knowledge Base Retrieval (Flow A)**: Queries standardized interview questions and rubrics from a FAISS vector index and dynamically personalizes them using candidate resume details.
+  - **Dynamic Resume Synthesis (Flow B)**: Generates questions directly from candidate projects and target job descriptions, automatically constructing matching 3 to 5 point evaluation rubrics.
+- **Adaptive Difficulty Engine**: Adjusts subsequent question difficulty between Easy, Medium, and Hard based on running candidate evaluation scores.
+- **Structured Rubric Evaluation**: Scores responses from 0 to 10 against predefined criteria with boolean satisfaction checks, identified strengths, areas for improvement, and ideal reference answers.
+- **Skip & Pass Handling**: Includes dedicated handling for unfamiliar topics, awarding transparent feedback and full reference explanations without interrupting the interview loop.
+- **Analytics & Export**:
+  - Interactive radar chart visualizing candidate competency across tested topics.
+  - Comprehensive final report table detailing question-by-question outcomes.
+  - One-click CSV export containing full interview transcripts, rubric criteria, candidate answers, and model solutions.
+- **Document Processing**: Extracts and processes candidate resumes from PDF uploads and parses target job descriptions for semantic retrieval.
 ---
-
-## 🚀 Quick Start Guide
-
-### 1. Get a Free Gemini API Key
-- Go to [Google AI Studio](https://aistudio.google.com/app/apikey).
-- Sign in with any Google account and click **Create API Key**.
-- No credit card required.
-
-### 2. Configure `.env`
-Open `.env` in this directory and paste your key:
-```ini
-GEMINI_API_KEY=AIzaSy...
-```
-*(Alternatively, you can paste the key directly into the app's sidebar when launched!)*
-
-### 3. Launch the Application
-Run in your PowerShell / terminal:
-```powershell
-.\venv\Scripts\Activate.ps1
-streamlit run app.py
-```
-Your browser will open automatically at `http://localhost:8501`.
-
+## Supported Topics
+- **Data Structures & Algorithms**: Arrays, Linked Lists, Trees, Dynamic Programming, Graphs
+- **Software Engineering & Architecture**: OOPs, Operating Systems, System Design, Python, Machine Learning
+- **Behavioral**: HR & Situational Judgment
 ---
+## Tech Stack
+- **Application Framework**: Python 3.10+
+- **Frontend / Interface**: Streamlit
+- **LLM Orchestration**: LangChain, LangChain Core (LCEL)
+- **Foundation Model**: Google Gemini (`gemini-2.5-flash` via `langchain-google-genai`)
+- **Embeddings**: Google Generative AI Embeddings (`models/gemini-embedding-001`)
+- **Vector Search**: FAISS (`faiss-cpu`)
+- **Document Ingestion**: pypdf
+- **Data Validation & Schemas**: Pydantic v2
+- **Analytics & Visualization**: Plotly, Pandas
+---
+## Directory Structure
 
-## 📂 Project Architecture
-
-```
+```text
 ai_mock_interviewer/
-├── .env                      # API keys (GEMINI_API_KEY)
-├── .env.example              # Template
-├── requirements.txt          # Python dependencies
-├── app.py                    # Streamlit frontend & stage router
-├── README.md                 # Project documentation
+│
+├── app.py                      # Main Streamlit application and UI state router
+├── requirements.txt            # Project dependencies
+├── .env.example                # Environment variable template
+├── .gitignore                  # Git ignore rules for virtual environments and cache
+├── README.md                   # Project documentation
+│
 ├── data/
-│   └── knowledge_base.jsonl  # 25 verified interview questions & rubrics
+│   └── knowledge_base.jsonl    # Curated interview questions, topics, and rubrics
+│
 └── src/
-    ├── __init__.py
-    ├── schemas.py             # Pydantic schemas (Topic enum, Difficulty, etc.)
-    ├── interview_state.py     # Pure Python state machine & session tracking
-    ├── document_processing.py # PDF chunking & JSONL loader
-    ├── vector_store.py        # Dual FAISS index management
-    └── llm_orchestrator.py    # LCEL prompt chains & Gemini integration
+    ├── __init__.py             # Package initializer
+    ├── schemas.py              # Pydantic models and topic/difficulty enums
+    ├── interview_state.py      # Session state machine and progress tracking
+    ├── document_processing.py  # PDF resume parser and JSONL loader
+    ├── vector_store.py         # FAISS vector database initialization and retrieval
+    └── llm_orchestrator.py     # Prompt chains, question generators, and rubric evaluators
 ```
+
