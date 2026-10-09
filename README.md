@@ -1,7 +1,7 @@
 # AI Mock Interviewer
 
 ## Overview
-AI Mock Interviewer simulates technical and behavioral hiring loops by assessing candidate knowledge across core computer science concepts, system architecture, and situational judgment. The system implements dual question generation pathways: standardized, curated question retrieval via vector similarity search, alongside dynamic question synthesis derived directly from candidate resume projects and target job descriptions. Responses are evaluated against multi-point rubrics to provide constructive feedback, reference answers, and performance analytics.
+<sub>AI Mock Interviewer simulates technical and behavioral hiring loops by assessing candidate knowledge across core computer science concepts, system architecture, and situational judgment. It implements dual question generation via vector similarity search and dynamic resume synthesis with real-time rubric-based evaluation.</sub>
 ---
 ## Core Features
 - **Two-Stage Interview Pipeline**:
